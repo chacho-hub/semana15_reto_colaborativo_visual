@@ -1,0 +1,7 @@
+Semana 15: Practica guiada en el entorno - Reto colaborativo y comunicacion visual
+
+En esta actividad el estudiante abrira un proyecto en VS Code, ejecutara comandos, explorara datos rurales en CSV, corregira errores intencionales en scripts de Python, generara un reporte y un grafico, y documentara el proceso mediante bitacora, roles de equipo y registro de evidencias.
+
+Entrega: PDF de evidencias o carpeta comprimida con archivos completados.
+Modalidad: individual o parejas.
+Herramienta Moodle sugerida: Tarea (Assignment).
