@@ -15,8 +15,7 @@ import matplotlib.pyplot as plt
 BASE_DIR = Path(__file__).resolve().parent.parent
 RESULTADOS_DIR = BASE_DIR / "resultados"
 
-# ERROR INTENCIONAL 1: revisa si el archivo generado por el script anterior tiene este nombre.
-RESUMEN_CSV = RESULTADOS_DIR / "resumen_finca.csv"
+RESUMEN_CSV = RESULTADOS_DIR / "resumen_fincas.csv"
 GRAFICO = RESULTADOS_DIR / "grafico_produccion_leche.png"
 
 
@@ -25,8 +24,7 @@ def main():
 
     resumen = pd.read_csv(RESUMEN_CSV)
 
-    # ERROR INTENCIONAL 2: revisa si esta columna existe en el resumen.
-    resumen = resumen.sort_values("total_litros", ascending=False)
+    resumen = resumen.sort_values("litros_leche", ascending=False)
 
     plt.figure(figsize=(10, 6))
     plt.bar(resumen["finca"], resumen["litros_leche"])

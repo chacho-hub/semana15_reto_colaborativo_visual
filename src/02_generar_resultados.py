@@ -21,8 +21,7 @@ import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ERROR INTENCIONAL 1: el nombre del archivo no coincide con el CSV real.
-DATA_FILE = BASE_DIR / "data" / "produccion_rural.csv"
+DATA_FILE = BASE_DIR / "data" / "produccion_fincas.csv"
 
 RESULTADOS_DIR = BASE_DIR / "resultados"
 REPORTE_TXT = RESULTADOS_DIR / "reporte_resultados.txt"
@@ -34,12 +33,10 @@ def main():
 
     df = pd.read_csv(DATA_FILE)
 
-    # ERROR INTENCIONAL 2: estas columnas no existen exactamente con estos nombres.
-    total_leche = df["litro_leche"].sum()
-    total_maiz = df["maiz_kg"].sum()
+    total_leche = df["litros_leche"].sum()
+    total_maiz = df["kilos_maiz"].sum()
 
-    # ERROR INTENCIONAL 3: esta agrupacion usa una columna incorrecta.
-    resumen = df.groupby("nombre_finca").agg({
+    resumen = df.groupby("finca").agg({
         "litros_leche": "sum",
         "kilos_maiz": "sum",
         "calidad_dato": "count"
@@ -48,9 +45,22 @@ def main():
     resumen = resumen.rename(columns={
         "calidad_dato": "cantidad_registros"
     })
+    resumen["registros_revision"] = (
+        df[df["calidad_dato"].isin(["revisar", "dato_incompleto"])]
+        .groupby("finca")
+        .size()
+        .reindex(resumen["finca"], fill_value=0)
+        .to_numpy()
+    )
+    resumen = resumen.sort_values("litros_leche", ascending=False)
 
-    # ERROR INTENCIONAL 4: falta crear la carpeta resultados antes de guardar.
+    RESULTADOS_DIR.mkdir(exist_ok=True)
     resumen.to_csv(RESUMEN_CSV, index=False, encoding="utf-8")
+
+    finca_mayor_leche = resumen.loc[resumen["litros_leche"].idxmax()]
+    finca_mayor_maiz = resumen.loc[resumen["kilos_maiz"].idxmax()]
+    datos_revision = df[df["calidad_dato"].isin(["revisar", "dato_incompleto"])]
+    conteo_calidad = df["calidad_dato"].value_counts()
 
     reporte = []
     reporte.append("REPORTE COLABORATIVO DE PRODUCCION RURAL")
@@ -58,8 +68,26 @@ def main():
     reporte.append(f"Total de leche registrado: {total_leche:.2f} litros")
     reporte.append(f"Total de maiz registrado: {total_maiz:.2f} kilos")
     reporte.append("")
+    reporte.append("Respuestas principales:")
+    reporte.append(
+        f"- Finca con mayor produccion de leche: {finca_mayor_leche['finca']} "
+        f"({finca_mayor_leche['litros_leche']:.2f} litros)."
+    )
+    reporte.append(
+        f"- Finca con mayor cosecha de maiz: {finca_mayor_maiz['finca']} "
+        f"({finca_mayor_maiz['kilos_maiz']:.2f} kilos)."
+    )
+    reporte.append(
+        f"- Datos que requieren revision: {len(datos_revision)} registros marcados "
+        "como revisar o dato_incompleto."
+    )
+    reporte.append("- Recurso visual recomendado: grafico de barras por finca.")
+    reporte.append("")
+    reporte.append("Calidad de los datos:")
+    reporte.append(str(conteo_calidad))
+    reporte.append("")
     reporte.append("Resumen por finca:")
-    reporte.append(str(resumen))
+    reporte.append(resumen.to_string(index=False))
 
     REPORTE_TXT.write_text("\n".join(reporte), encoding="utf-8")
 

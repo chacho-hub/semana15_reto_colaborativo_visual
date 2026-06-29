@@ -1,0 +1,31 @@
+﻿REPORTE COLABORATIVO DE PRODUCCION RURAL
+========================================
+Total de leche registrado: 84.635,84 litros
+Total de maiz registrado: 276.469,90 kilos
+
+Respuestas principales:
+- Finca con mayor produccion de leche: Buena Vista (11.763,69 litros).
+- Finca con mayor cosecha de maiz: San Miguel (35.408,91 kilos).
+- Datos que requieren revision: 192 registros marcados como revisar o dato_incompleto.
+- Recurso visual recomendado: grafico de barras por finca.
+
+Calidad de los datos:
+ok: 1488
+revisar: 127
+dato_incompleto: 65
+
+Resumen por finca:
+
+finca        litros_leche kilos_maiz cantidad_registros registros_revision
+-----        ------------ ---------- ------------------ ------------------
+Buena Vista      11763,69    34103,2                210                 17
+Monteverde       11408,31    35034,7                210                 27
+El Guadual       11406,36   35295,76                210                 23
+La Rivera        10809,11   33837,02                210                 32
+San Miguel       10341,06   35408,91                210                 26
+Los Naranjos     10008,74   35178,74                210                 23
+El Progreso       9962,09   33548,73                210                 19
+La Esperanza      8936,48   34062,84                210                 25
+
+
+
